@@ -54,7 +54,7 @@ const Content = () => {
     return (
         <section className="text-gray-800 max-w-[1440px] mx-auto lg:w-3/4 px-2 py-4 justify-center flex items-center flex-col">
             <h1 className="text-[50px]">
-                {walletReady ? data ? `${data}` : "Loading ..." : "Loading ..."}
+                {walletReady ? (data ? "Loading ..." : `${data}`) : "Loading ..."}
             </h1>
             {!account ? <ConnectButton /> : (
                 <form onSubmit={changeMessage} className="change">
