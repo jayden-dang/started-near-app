@@ -1,17 +1,18 @@
 'use client'
 
 import { useAppSelector } from "@/context/store"
-import { selectIsLoading, selectWallet } from "@/features/walletSlice"
+import { selectAccountId, selectIsLoading, selectWallet } from "@/features/walletSlice"
 import { useEffect, useState } from "react";
+import ConnectButton from "./ConnectButton";
 
 const CONTRACT_ID = process.env.NEXT_PUBLIC_CONTRACT_NAME || "";
 
 const Content = () => {
     const wallet = useAppSelector(selectWallet);
+    const account = useAppSelector(selectAccountId);
     const [walletReady, setWalletready] = useState(false);
     const [data, setData] = useState<number>(0);
     const isLoading = useAppSelector(selectIsLoading);
-    const [isChange, setIsChange] = useState(false)
 
     useEffect(() => {
         if (!isLoading && wallet) {
@@ -37,7 +38,7 @@ const Content = () => {
             console.error("Wallet is not initialized");
             return;
         }
-      setIsChange(true)
+      setWalletready(false)
         e.preventDefault();
         let { numberInput } = e.target.elements;
         let parsedValue = parseInt(numberInput.value);
@@ -47,13 +48,13 @@ const Content = () => {
             method: "plus",
             args: { number: parsedValue },
             gas: "300000000000000"
-        }).then(() => setIsChange(false)).then(() => window.location.reload());
+        }).then(() => setWalletready(true)).then(() => window.location.reload());
     };
 
     return (
         <section className="text-gray-800 max-w-[1440px] mx-auto lg:w-3/4 px-2 py-4 justify-center flex items-center flex-col">
             <h1 className="text-[50px]">
-              {isChange ? "Loading..." : data ? `${data}` : "Loading ..."}
+              {walletReady ? data ? `${data}` : "Loading ..." : "Loading ..."}
           </h1>
             <form onSubmit={changeMessage} className="change">
                 <div className="flex space-x-4">
@@ -63,12 +64,15 @@ const Content = () => {
                         id="numberInput"
       className="border border-gray-600 px-4 py-2 rounded-md text-white transition-all duration-300 font-medium"
                     />
-                    <button
-      className="border border-gray-600 px-4 py-2 rounded-md text-gray-600 hover:bg-gray-300 hover:border-b-4 hover:border-r-4 transition-all duration-300 font-medium"
-                    >
-                        <span>Save</span>
-                        <div className="loader"></div>
-                    </button>
+                    {account ? (
+                        <button className={`border border-gray-600 px-4 py-2 rounded-md text-gray-600 hover:bg-gray-300 hover:border-b-4 hover:border-r-4 transition-all duration-300 font-medium ${!walletReady && "disabled cursor-not-allowed hover:border-b-0 hover:border-r-0 bg-gray-400"}`}
+                        >
+                            <span>Plus Me</span>
+                            <div className="loader"></div>
+                        </button>
+                    ) : (
+                        <ConnectButton />
+                    )}
                 </div>
             </form>
         </section>
