@@ -6,12 +6,19 @@ args = ["install"]
 command = "pnpm"
 args = ["dev"]
 
-[tasks.resest]
+[tasks.reset]
 command = "pnpm"
 args = ["deploy:start"]
 
+[tasks.cleanenv]
+clear = true
+cwd = "./client"
+script = """
+rm -rf .env
+"""
 
 [tasks.clean]
+dependencies = ["cleanenv"]
 clear = true
 cwd = "./contract"
 script = """
@@ -32,15 +39,16 @@ args = ["build", "--target", "wasm32-unknown-unknown", "--release"]
 
 [tasks.dev-deploy]
 dependencies = ["build"]
+cwd = "./contract"
 script = """
 #!/usr/bin/env zsh
 
 set -e
-WASM_PATH="$(find ./contract/target/wasm32-unknown-unknown/release -maxdepth 1 -name "*.wasm")"
+WASM_PATH="$(find ./target/wasm32-unknown-unknown/release -maxdepth 1 -name "*.wasm")"
 
 near dev-deploy --wasmFile $WASM_PATH
 
-if ! grep -q "^NEXT_PUBLIC_$(cat ./neardev/dev-account.env)$" ./client/.env; then echo "NEXT_PUBLIC_$(cat ./neardev/dev-account.env)" >> ./client/.env; fi
+if ! grep -q "^NEXT_PUBLIC_$(cat ./neardev/dev-account.env)$" ../client/.env; then echo "NEXT_PUBLIC_$(cat ./neardev/dev-account.env)" >> ../client/.env; fi
 """
 
 [tasks.call]
