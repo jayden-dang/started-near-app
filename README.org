@@ -8,7 +8,7 @@
 + Prerequisites
 
 #+begin_quote
-Make sure you have a current version of Node.js installed => We recommend versions 18+
+Make sure you have a current version of Node.js & Rust installed => We recommend versions 18+ & rust 1.69
 #+end_quote
 
 * Getting Started
@@ -18,16 +18,17 @@ git clone https://github.com/eamondang/started-near-app.git && cd started-near-a
 #+end_src
 
 ** Requirements Install
++ Cargo Make
 #+begin_src sh :results output
 cargo install cargo-make
 #+end_src
 
-* Step by Step
 + Install near Cli
 #+begin_src sh :results output
 npm install -g near-cli
 #+end_src
 
+* Step by Step
 + Install the package
 #+begin_src sh :results output
 cargo make install

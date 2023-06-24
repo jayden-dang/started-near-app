@@ -29,6 +29,7 @@ rm -rf ./target/
 
 [tasks.prepare]
 script = """
+#!/usr/bin/env zsh
 rustup target add wasm32-unknown-unknown && rustup install 1.69 && rustup default 1.69 && cargo --version
 """
 
