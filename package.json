@@ -1,0 +1,20 @@
+{
+  "name": "started-near-app",
+  "version": "1.0.0",
+  "description": "",
+  "repository": "https://github.com/eamondang/started-near-app",
+  "scripts": {
+    "install": "cd client && pnpm install",
+    "dev": "cd client && pnpm dev",
+    "build": "cd contract && cargo make build",
+    "deploy:contract" : "cd contract && cargo make dev-deploy",
+    "deploy:start": "cd client && rm -rf .env && cd .. && cd contract && cargo make dev-deploy && cd ../client && open \"http://localhost:3000\" && pnpm dev"
+  },
+  "keywords": [
+    "Near",
+    "Eamon",
+    "Dang"
+  ],
+  "author": "Dang Quang Vu <eamondang@gmail.com>",
+  "license": "ISC"
+}
